@@ -46,10 +46,16 @@
             position: absolute;
             left: 0px; bottom: -300px;
         }
+        #ver {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+        }
     </style>
 </head>
 <body>
-    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.<br>ver. 1.32</div>
+    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.</div>
+    <div id="ver">ver. 1.32</div>
     <button class="button" onclick="clickThis()" style="left: 5%"><span>사제</span></button>
     <button class="button" onclick="clickThis()" style="left: 50%; transform: translateX(-50%)"><span>성기사</span></button>
     <button class="button" onclick="clickThis()" style="right: 5%"><span>중립</span></button>
