@@ -49,7 +49,7 @@
     </style>
 </head>
 <body>
-    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.</div>
+    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.<br>ver. 1.2</div>
     <button class="button" onclick="clickThis()" style="left: 5%"><span>사제</span></button>
     <button class="button" onclick="clickThis()" style="left: 50%; transform: translateX(-50%)"><span>성기사</span></button>
     <button class="button" onclick="clickThis()" style="right: 5%"><span>중립</span></button>
@@ -87,6 +87,15 @@
             }
         }
         function c() {
+            if(gr==true) {
+                att++;
+                hlt++;
+            }
+            if(hlt == 0) {
+                t("<b style='color: red'>딱뎀 ㄷ; (+영구스탯증가)</b>")
+                normalAtt++
+                normalHlt++
+            }
             var att_ = att
             var hlt_ = hlt
             if(att < 0) att = 0
@@ -96,9 +105,12 @@
             if(maxhlt > hlt) hlt_ = "<b style='color: red'>"+hlt+"</b>"
             t("현재 스탯: <b>"+att_+"/"+hlt_+"</b> 점수: <b>"+score+"</b>");
             document.getElementById("text").scrollTop = document.getElementById("text").scrollHeight;
-            if(hlt <= 0) {die()}
+            if(hlt <= 0) {
+                die()
+            }
         }
         function die() {
+            deathwing = false;
             t("<b style='color: red'>공포마는 죽고말았다...</b>")
             t("최종점수: <b style='color: lime'>"+maxScore+"</b>")
             if(silence == true) {
@@ -108,9 +120,9 @@
                     maxScore = 0;
                     score = 0;
                     bonus = 0;
-                    hlt = 1;
-                    maxhlt = 1;
-                    att = 1;
+                    hlt = normalHlt;
+                    maxhlt = normalHlt
+                    att = normalAtt;
                     silence = false;
                     respawn = false;
                     last = [];
@@ -123,9 +135,9 @@
                 t("하지만, <b>다시 살아났다!</b> 지옥마는 전생의 힘을 약간 얻었다!")
                 maxScore = 0;
                 att = Math.ceil(bonus/1000)+1
-                if(att <= 0) att = 1;
-                hlt = 1
-                maxhlt = Math.ceil(bonus/5000)+1
+                if(att < normalAtt) att = normalAtt;
+                hlt = normalHlt;
+                maxhlt = Math.ceil(bonus/5000)+normalHlt;
                 bonus = 0;
                 last = []
                 respawn = false;
@@ -139,6 +151,10 @@
         var maxScore = 0;
         var bonus = 0;
         var last = []
+        var deathwing = false;
+        var normalAtt = 1;
+        var normalHlt = 1;
+        var gr = false;
 
         var silence = false;
         var shield = false;
@@ -155,7 +171,7 @@
                 case 2 : t("<b>내면의 열정</b>도 생겼다."); att = hlt; if(last[0] == 1004) {t("<b style='color: lime'>극혐 (+1818)</b>"); s(1818);}; last.unshift(1003); s(); break;
                 case 3 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); s(); break;
                 case 4 : t("<b>어둠의 권능인 죽음</b>이 다가온다.."); last.unshift(1005); if(att>=5) {die()} else {t("하지만 당신은 공격력이 낮아 살아남았다!"); t("<b style='color: lime'>살아남은 자 (+1234)</b>"); s(1234);} break;
-                case 5 : t("<b>침묵</b>을 맞았다. 더 이상 공포마는 가치가 없다.."); att = 1; hlt = 1; maxhlt = 1; silence = true; shield = false; respawn = false; last.unshift(1006); break;
+                case 5 : t("<b>침묵</b>을 맞았다. 더 이상 공포마는 가치가 없다.."); att = normalAtt; hlt = normalHlt; maxhlt = normalHlt; silence = true; shield = false; respawn = false; last.unshift(1006); break;
                 case 6 : t("<b>벨렌의 선택</b>을 받았다."); att += 2; hlt += 4; maxhlt += 4; last.unshift(1007); s(); break;
                 case 7 : t("<b>신의 권능인 촉수</b>를 받았다."); att += 2; hlt += 6; maxhlt += 6; last.unshift(1008); s(); break;
                 case 8 : t("<b>이글거리는 나방</b>의 날개짓을 받았다."); hlt = hlt*2; maxhlt = maxhlt*2; last.unshift(1009); s(); break;
@@ -192,15 +208,15 @@
             t("********************************")
             switch (Math.floor(Math.random()*12)) {
                 case 0 : t("<b>해골마</b>가 나를 강하게 만들어줬다."); att += 4; hlt += 4; maxhlt += 4; s(); last.unshift(3001); break;
-                case 1 : t("<b>무너진 태양 성직자</b>의 힘을 얻었다."); hlt += 1; maxhlt += 1; att += 1; s(); last.unshift(3002); break;
+                case 1 : t("<b>무너진 태양 성직자</b>의 힘을 얻었다."); hlt += 1; maxhlt += 1; att += 1; if(att==hlt) {t("<b style='color: red'>유사 그룰 (+그룰 효과)</b>"); gr = true;} s(); last.unshift(3002); break;
                 case 2 : t("<b>창 운반꾼</b>이 날카로운 창을 건넸다."); att += 2; s(); if(last[0] == 3003) {t("<b style='color: lime'>난 쌍창잡이지. (+2222)</b>"); s(2222);} last.unshift(3003); break;
                 case 3 : t("<b>곰팡이술사의 버섯의 힘이 쏫아났다!!</b>"); hlt += 2; maxhlt += 2; att += 2; s(); if(last[0] == 3004&&last[1] == 3004) {t("<b style='color: lime'>무서운 버섯의 힘 (+"+bonus+")</b>"); s(bonus);} last.unshift(3004); break;
                 case 4 : hurt(8); t("<b>불의 군주 라그나로스</b>의 불의 세례를 맞았다.."); s(); last.unshift(3005); break;
                 case 5 : t("<b>호젠 치유사</b>가 당신을 회복시켰다!"); heal(maxhlt); s(); last.unshift(3006); break;
                 case 6 : hurt(7); t("<b>난동을 피우는 용</b>의 난동으로 공격받았다!"); s(); last.unshift(3007); break;
-                case 7 : hurt(5); t("<b>불길소환사</b>의 불길로 감싸졌다!");s(); last.unshift(3008); break;
+                case 7 : hurt(5); t("<b>불길소환사</b>의 불길로 감싸졌다!");s(); if(last[0] == 3005) {t("<b style='color: lime'>전 턴에 정령을 냈네 (+8888, 체력 1까지)</b>"); s(8888); hurt(hlt-1);} last.unshift(3008); break;
                 case 8 : t("<b>아케루스 정예병</b>의 장검을 받았다."); att += 1; s(); last.unshift(3009); break;
-                case 9 : t("<b>데스윙</b>의 대격변이 일어났다..."); last.unshift(3010); die(); break;
+                case 9 : t("<b>데스윙</b>의 대격변이 일어났다..."); last.unshift(3010); if(deathwing == true) {t("<b style='color: red'>익숙한 대격변 엔딩 (+데스윙의 기운)</b>"); normalAtt = 12; normalHlt = 12;} die(); deathwing = true; break;
                 case 10 : t("<b>시체생환사</b>의 효과를 받았다. 침묵을 맞고 죽어도 다시 살아난다!"); last.unshift(3011); if(respawn==false&&silence==true) {t("<b style='color: lime'>침묵이 뭔데 (+4850)</b>"); respawn = true; s(150); s(4850);} s(); break;
                 case 11 : t("라팜이 <b>힘의 랜턴</b>을 줬다."); att += 10; hlt += 10; maxhlt += 10; if(last[0] == 2004) {t("<b style='color: lime'>초반 최강콤보 (+"+score+")</b>"); s(score);} last.unshift(3012); s(); break;
             }
@@ -212,7 +228,6 @@
             if(event.keyCode == 50) document.querySelectorAll(".button")[1].click()
             if(event.keyCode == 51) document.querySelectorAll(".button")[2].click()
         }
-        
     </script>
 </body>
 </html>
