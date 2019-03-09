@@ -49,7 +49,7 @@
     </style>
 </head>
 <body>
-    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.<br>ver. 1.3</div>
+    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.<br>ver. 1.31</div>
     <button class="button" onclick="clickThis()" style="left: 5%"><span>사제</span></button>
     <button class="button" onclick="clickThis()" style="left: 50%; transform: translateX(-50%)"><span>성기사</span></button>
     <button class="button" onclick="clickThis()" style="right: 5%"><span>중립</span></button>
@@ -181,6 +181,8 @@
                 case 11 : t("<b>여분 팔</b>을 사용했다."); att += 2; hlt += 2; s(); c(); t("<b>더 많은 팔</b>을 사용했다."); att += 2; hlt += 2; if(last[0]==1012) {t("<b style='color: lime'>팔이 몇개야 (+888)</b>"); s(888)} last.unshift(1012); s(); break;
                 case 12 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); s(); break;
                 case 13 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); s(); break;
+                case 14 : t("<b>내면의 열정</b>도 생겼다."); att = hlt; if(last[0] == 1004) {t("<b style='color: lime'>극혐 (+1818)</b>"); s(1818);}; last.unshift(1003); s(); break;
+                case 15 : t("<b>내면의 열정</b>도 생겼다."); att = hlt; if(last[0] == 1004) {t("<b style='color: lime'>극혐 (+1818)</b>"); s(1818);}; last.unshift(1003); s(); break;
             }
             c()
         }
