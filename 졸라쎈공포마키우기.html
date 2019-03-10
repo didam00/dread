@@ -236,7 +236,7 @@
                 case 2 : t("<b>내면의 열정</b>도 생겼다."); att = hlt; if(last[0] == 1004) {t("<b style='color: lime'>극혐 (+1818)</b>"); s(1818);}; last.unshift(1003); break;
                 case 3 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); break;
                 case 4 : t("<b>어둠의 권능인 죽음</b>이 다가온다.."); last.unshift(1005); if(att>=5) {die()} else {t("하지만 당신은 공격력이 낮아 살아남았다!"); t("<b style='color: lime'>살아남은 자 (+1234)</b>"); s(1234);} break;
-                case 5 : t("<b>침묵</b>을 맞았다. 더 이상 공포마는 가치가 없다.."); att = normalAtt; hlt = normalHlt; maxhlt = normalHlt; silence = true; shield = false; respawn = false; sal = false; endbuff = [1,1] last.unshift(1006); break;
+                case 5 : t("<b>침묵</b>을 맞았다. 더 이상 공포마는 가치가 없다.."); att = normalAtt; hlt = normalHlt; maxhlt = normalHlt; silence = true; shield = false; respawn = false; sal = false; endbuff = [0,0]; last.unshift(1006); break;
                 case 6 : t("<b>벨렌의 선택</b>을 받았다."); att += 2; hlt += 4; maxhlt += 4; last.unshift(1007); break;
                 case 7 : t("<b>신의 권능인 촉수</b>를 받았다."); att += 2; hlt += 6; maxhlt += 6; last.unshift(1008); break;
                 case 8 : t("<b>이글거리는 나방</b>의 날개짓을 받았다."); hlt = hlt*2; maxhlt = maxhlt*2; last.unshift(1009); break;
