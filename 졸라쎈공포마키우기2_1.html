@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html style="background: black;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>졸라쎈공포마키우기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="공포마 버프좀;">
+    <meta property="og:description" content="공포마 졸라 약해졌는데 버프좀">
+    <meta property="og:image" content="kakaotalk thumbnail.jpg">
+    <style>
+        @font-face { font-family: 'DOSMyungjo'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/DOSMyungjo.woff') format('woff'); font-weight: normal; font-style: normal; }
+        * {
+            font-family: DOSMyungjo;
+            font-size: 20px;
+            color: white;
+            user-select: none;
+        }
+        body {
+            width: 100%; height: 100%;
+            overflow-x: hidden;
+        }
+        body::-webkit-scrollbar {
+            width: 0px;
+        }
+        #text {
+            overflow-x: hidden;
+            line-height: 150%;
+        }
+        button {
+            position: fixed;
+            height: 50px; width: 25%;
+            bottom: 20px;
+            background: black;
+            cursor: pointer;
+            border-color: white;
+            border-width: 2px;
+            outline: none;
+            z-index: 1;
+        }
+        .button span {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            color: white;
+        }
+        #hider {
+            background: black;
+            width: 100%; height: 390px;
+            position: fixed;
+            left: 0px; bottom: -300px;
+        }
+        #ver {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="text"><b>게임이 시작되었습니다.</b><br>세 직업 중 하나를 고르면 그 직업의 무작위 주문이 사용됩니다.<br>컴퓨터의 경우 순서대로 1, 2, 3 을 눌러도 됩니다.</div>
+    <div id="ver">ver. 2.01</div>
+    <button class="button" onclick="clickThis()" style="left: 5%"><span>사제</span></button>
+    <button class="button" onclick="clickThis()" style="left: 50%; transform: translateX(-50%)"><span>성기사</span></button>
+    <button class="button" onclick="clickThis()" style="right: 5%"><span>중립</span></button>
+    <div id="hider"></div>
+    <script>
+        function clickThis() {
+            event.srcElement.style.background = "blue"
+        }
+        function t(a) {
+            return document.getElementById("text").innerHTML = a+"<br>"+document.getElementById("text").innerHTML;
+        }
+        function s(a) {
+            if(a==null) {
+                score = (hlt+att)*100 + bonus - 200
+            } else {
+                bonus += a
+                score += a
+            }
+            if(maxScore < score) {
+                maxScore = score
+            }
+        }
+        function heal(a) {
+            hlt += a;
+            if(hlt > maxhlt) {
+                hlt = maxhlt;
+            }
+        }
+        function hurt(a) {
+            if(shield == true&&a>0) {
+                t("하지만 <b>천상의 보호막</b>의 효과로 공격을 막았다!")
+                shield = false;
+            } else if(a<=0) {
+                t("하지만 피해는 없었다..")
+            } else if(a>=8) {
+                t("꽤 큰 피해를 받았다!")
+                hlt -= a;
+            } else {
+                hlt -= a;
+            }
+            if(hlt+20 <= maxhlt) {
+                t("<b style='color: lime'>얼마나 맞는거야? (+ 2020)</b>"); s(2020);
+            }
+        }
+        function c() {
+            if(gr==true) {
+                att++;
+                hlt++;
+            }
+            att += endbuff[0]
+            hlt += endbuff[1]
+            if(hlt == 0) {
+                t("<b style='color: red'>딱뎀 ㄷ; (+영구스탯증가)</b>")
+                normalAtt += 2
+                normalHlt += 2
+            }
+            if(hlt == -1) {
+                t("<b style='color: red'>어뎀 ㄷ; (+영구스탯증가)</b>")
+                normalAtt++
+                normalHlt++
+            }
+            // quest
+            if(last[0]!=null&last[1]!=null) {
+                switch (last[0].toString()+last[1].toString()) {
+                    case '30123012' : t("<b style='color: lime'>라팜이 인정 (+기본 스탯 대폭 증가)</b>"); normalAtt += 10; normalHlt += 10; break;
+                    case '20082008' : t("<b style='color: lime'>골든벨 (+1212)</b>"); s(122); break;
+                    case '20152015' : t("<b style='color: lime'>신이 노했다 (+999)</b>"); s(999); break;
+                    case '10012015' : t("<b style='color: lime'>갑자기 화내는 놈 (+1919)</b>"); s(1919); break;
+                    case '20151001' : t("<b style='color: lime'>급방긋 (+1616)</b>"); s(1616); break;
+                    case '10041009' : t("<b style='color: lime'>천정나비의 조화 (+248)</b>"); s(248); break;
+                    case '10091004' : t("<b style='color: lime'>나비천정의 조화 (+248)</b>"); s(248); break;
+                    case '10031003' : t("<b style='color: lime'>열정페이 (+1111)</b>"); s(1111); break;
+                    case '20132013' : t("<b style='color: lime'>지겨운 천벌 (+333)</b>"); s(333); break;
+                }
+                if(att < 0) {
+                    t("<b style='color: lime'>때리면 상대가 회복 (+ 1010)</b>"); s(1010);
+                }
+            }
+
+            var att_ = att
+            var hlt_ = hlt
+            if(att < 0) att = 0
+            if(hlt < 0) hlt = 0
+            if(att > 1) att_ = "<b style='color: lime'>"+att+"</b>"
+            if(hlt > 1) hlt_ = "<b style='color: lime'>"+hlt+"</b>"
+            if(maxhlt > hlt) hlt_ = "<b style='color: red'>"+hlt+"</b>"
+            t("현재 스탯: <b>"+att_+"/"+hlt_+"</b> 점수: <b>"+score+"</b>");
+            document.getElementById("text").scrollTop = document.getElementById("text").scrollHeight;
+            if(hlt <= 0) {
+                die()
+            }
+
+        }
+        function die() {
+            deathwing = false;
+            t("<b style='color: red'>공포마는 죽고말았다...</b>")
+            t("최종점수: <b style='color: lime'>"+maxScore+"</b>")
+            if(silence == true) {
+                t("사제의 침묵을 받아 다시 깨어나지 않는다.")
+                if(respawn == true) {
+                    t("하지만, <b>시체생환사</b>의 효과로 당신은 다시 깨어났다!")
+                    maxScore = 0;
+                    score = 0;
+                    bonus = 0;
+                    hlt = normalHlt;
+                    maxhlt = normalHlt
+                    att = normalAtt;
+                    silence = false;
+                    respawn = false;
+                    sal = false;
+                    last = [];
+                } else if(sal == true) {
+                    t("하지만, <b>필사적인 저항</b>으로 다시 살아났다!")
+                    maxScore = 0;
+                    score = 0;
+                    bonus = 0;
+                    hlt = 1;
+                    maxhlt = normalHlt
+                    att = normalAtt;
+                    silence = false;
+                    respawn = false;
+                    sal = false;
+                    last = [];
+                } else {
+                    document.querySelectorAll(".button")[0].outerHTML = ""
+                    document.querySelectorAll(".button")[0].outerHTML = ""
+                    document.querySelectorAll(".button")[0].outerHTML = ""
+                    document.querySelector("#hider").outerHTML = ""
+                }
+            } else {
+                t("하지만, <b>다시 살아났다!</b> 지옥마는 전생의 힘을 약간 얻었다!")
+                maxScore = 0;
+                att = Math.ceil(bonus/200)+1
+                if(att < normalAtt) att = normalAtt;
+                hlt = normalHlt;
+                maxhlt = Math.ceil(bonus/5000)+normalHlt;
+                bonus = 0;
+                last = []
+                respawn = false;
+                shield = false;
+            }
+        }
+        var att = 1;
+        var maxhlt = 1;
+        var hlt = 1;
+        var score = 0;
+        var maxScore = 0;
+        var bonus = 0;
+        var last = []
+
+        var normalAtt = 1;
+        var normalHlt = 1;
+
+        var deathwing = false;
+        var gr = false;
+        var gazz = false;
+        var endbuff = [0,0];
+
+        var cardCost = ["위습","해적 패치스","<b style='color: yellow'>황금 밀하우스 마나스톰</b>","고르곤 졸라","위대한 위즈뱅 님","질리악스","흑기사","박사붐","그룰","얼음울음","메카툰","눈덩이 거인","무덤괴수","용암 거인","호랑이 시르밸라"]
+        var cardCost_ = [0,1,2,3,4,5,6,7,8,9,10,11,12,20,25]
+
+        var silence = false;
+        var shield = false;
+        var respawn = false;
+        var sal = false;
+        var filed = 1;
+        t("현재 스탯: <b>"+att+"/"+hlt+"</b> 점수: <b>0</b>")
+        
+        // 사제
+        document.querySelectorAll(".button")[0].onclick = function () {
+            t("********************************")
+            switch (Math.floor(Math.random()*17)) {
+                case 0 : t("<b>신의 축복</b>으로 <b>보호막</b>을 얻었다!"); hlt += 2; maxhlt += 2;  if(last[0]==1001&&last[1]==1001) {t("<b style='color: lime'>청정내열 준비중? (+24)</b>"); s(24);} last.unshift(1001); break;
+                case 1 : t("길을 가다가 <b>발라당</b>넘어졌다."); var box = att; att = hlt; maxhlt = box; hlt = box; ; if(last[0]==1002) {t("<b style='color: lime'>두번 넘어지면 그대로 (+1001)</b>"); s(1001);} if(att == 0) {t("<b style='color: lime'>뒤집다가 다칠수가 있습니다 (+10000)</b>"); s(10000);} s(10); last.unshift(1002); break;
+                case 2 : t("<b>내면의 열정</b>도 생겼다."); att = hlt; if(last[0] == 1004) {t("<b style='color: lime'>극혐 (+1818)</b>"); s(1818);}; last.unshift(1003); break;
+                case 3 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); break;
+                case 4 : t("<b>어둠의 권능인 죽음</b>이 다가온다.."); last.unshift(1005); if(att>=5) {die()} else {t("하지만 당신은 공격력이 낮아 살아남았다!"); t("<b style='color: lime'>살아남은 자 (+1234)</b>"); s(1234);} break;
+                case 5 : t("<b>침묵</b>을 맞았다. 더 이상 공포마는 가치가 없다.."); att = normalAtt; hlt = normalHlt; maxhlt = normalHlt; silence = true; shield = false; respawn = false; sal = false; endbuff = [1,1] last.unshift(1006); break;
+                case 6 : t("<b>벨렌의 선택</b>을 받았다."); att += 2; hlt += 4; maxhlt += 4; last.unshift(1007); break;
+                case 7 : t("<b>신의 권능인 촉수</b>를 받았다."); att += 2; hlt += 6; maxhlt += 6; last.unshift(1008); break;
+                case 8 : t("<b>이글거리는 나방</b>의 날개짓을 받았다."); hlt = hlt*2; maxhlt = maxhlt*2; last.unshift(1009); break;
+                case 9 : t("당신은 실수로 <b>축소 물약</b>을 마셨다."); att -= 3; last.unshift(1010); break;
+                case 10 : t("<b>토르톨란 방패병</b>의 방패를 얻었다!"); att += 1; hlt += 1; if(last[0] == 2011) {t("<b style='color: lime'>난 쌍방패잡이지. (+2222)</b>"); s(2222);} last.unshift(1011); break;
+                case 11 : t("<b>여분 팔</b>을 사용했다."); att += 2; hlt += 2; c(); t("<b>더 많은 팔</b>을 사용했다."); att += 2; hlt += 2; if(last[0]==1012) {t("<b style='color: lime'>팔이 몇개야 (+888)</b>"); s(888)} last.unshift(1012); break;
+                case 12 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); break;
+                case 13 : t("<b>천상의 정신</b>이 생겼다."); hlt = hlt*2; maxhlt = maxhlt*2; if(last[0]==1004) {t("<b style='color: lime'>끊임없이 올라가는 천정 (+22)</b>"); s(22);} last.unshift(1004); break;
+                case 14 : t("<b>내면의 열정</b>도 생겼다."); att = hlt; if(last[0] == 1004) {t("<b style='color: lime'>극혐 (+1818)</b>"); s(1818);}; last.unshift(1003); break;
+                case 15 : t("<b>어둠의 권능인 죽음</b>이 다가온다.."); last.unshift(1005); if(att>=5) {die()} else {t("하지만 당신은 공격력이 낮아 살아남았다!"); t("<b style='color: lime'>살아남은 자 (+1234)</b>"); s(1234);} break;
+                case 16 : t("길을 가다가 <b>발라당</b>넘어졌다."); var box = att; att = hlt; maxhlt = box; hlt = box; ; if(last[0]==1002) {t("<b style='color: lime'>두번 넘어지면 그대로 (+1001)</b>"); s(1001);} if(att == 0) {t("<b style='color: lime'>뒤집다가 다칠수가 있습니다 (+10000)</b>"); s(10000);} s(10); last.unshift(1002); break;
+            }
+             s(50); s(); c();
+        }
+        
+        // 성기사
+        document.querySelectorAll(".button")[1].onclick = function () {
+            t("********************************")
+            switch (Math.floor(Math.random()*20)) {
+                case 0 : t("<b>왕의 축복</b>을 받았다."); att += 4; hlt += 4; maxhlt += 4; last.unshift(2001); break;
+                case 1 : t("박사붐의 <b>축소 광선</b>을 맞았다!"); att = 1; maxhlt = 1; hlt = 1; if(att >= 50&& hlt >= 50) {t("<b style='color: lime'>떡락 (+1234)</b>"); s(1234);} last.unshift(2002); break;
+                case 2 : t("우연히 <b>가시가 돋친 탈것</b>을 발견했다."); att += 2; hlt += 6; maxhlt += 6; if(last[0] == 2003) {t("<b style='color: lime'>쌍돋탈 에반데.. (+2626)</b>"); s(2626);}; last.unshift(2003); break;
+                case 3 : t("<b>공룡의 몸집</b>이 되었다!"); att = 10; maxhlt = 10; hlt = 10; if(att == 1&&hlt == 1&&last[0] == null) {t("<b style='color: lime'>떡상 (+1010)</b>"); s(1010);} last.unshift(2004); break;
+                case 4 : t("허공에서 <b>실버문 차원문</b>이 나타났다."); att += 2; maxhlt += 2; hlt += 2; last.unshift(2005); break;
+                case 5 : t("당신의 몸에 <b>용사의 문장</b>이 새겨진다."); att += 3; shield = true; last.unshift(2006); break;
+                case 6 : t("우서가 <b>보호의 손길</b>로 당신을 감쌌다."); shield = true; last.unshift(2007); s(5); break;
+                case 7 : t("<b>종을 울려라!</b>"); att += 1; hlt += 2; maxhlt += 2; c(); att += 1; hlt += 2; maxhlt += 2;  s(50); s(); c();; att += 1; hlt += 2; maxhlt += 2;  s(50); s(); c();; att += 1; hlt += 2; maxhlt += 2;  s(50); s(); c();; att += 1; hlt += 2; maxhlt += 2; last.unshift(2008);  break;
+                case 8 : t("<b>두목 한초</b>의 도움을 받았다!"); att += 5; hlt += 5; maxhlt += 5; if(last[0] == 2009) {t("<b style='color: lime'>떡대들에 함류했다! (+1010)</b>"); s(1010);} last.unshift(2009);  break;
+                case 9 : t("당신은 <b>축복받은 용사</b>가 되었다."); att *= 2; if(last[0] == 2010) {t("<b style='color: lime'>무장완료 (+1248)</b>"); s(1248);} last.unshift(2010);  break;
+                case 10 : t("모두가 <b>평등</b>하다."); hlt = 1; maxhlt = 1; last.unshift(2011);  break;
+                case 11 : t("<b>힘의 축복</b>을 받았다."); att += 3; last.unshift(2012);  break;
+                case 12 : t("<b>공룡의 몸집</b>이 되었다!"); att = 10; maxhlt = 10; hlt = 10; if(att == 1&&hlt == 1&&last[0] == null) {t("<b style='color: lime'>떡상 (+1010)</b>"); s(1010);} last.unshift(2004);  break;
+                case 13 : hurt(3); t("하늘에서 <b>천벌의 망치</b>가 떨어졌다!"); last.unshift(2013); s(300); break;
+                case 14 : t("당신에게 <b>응징의 격노</b>가 내려온다!"); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); s(); c(); t("<b>응징의 격노</b>로 인해 피해를 1 받았다!"); hurt(1); last.unshift(2014); s(800); break;
+                case 15 : var rnd = Math.floor(Math.random()*15); hurt(cardCost_[rnd]); t("<b>신의 격노</b>가 나타났다. 뽑은 카드는 "+cardCost_[rnd]+"코스트 '<b>"+cardCost[rnd]+"</b>'! 격노가 다가온다!"); last.unshift(2015); s(cardCost_[rnd]*100); break;
+                case 16 : var rnd = Math.floor(Math.random()*15); hurt(cardCost_[rnd]); t("<b>신의 격노</b>가 나타났다. 뽑은 카드는 "+cardCost_[rnd]+"코스트 '<b>"+cardCost[rnd]+"</b>'! 격노가 다가온다!"); last.unshift(2015); s(cardCost_[rnd]*100); break;
+                case 17 : hurt(3); t("하늘에서 <b>천벌의 망치</b>가 떨어졌다!"); last.unshift(2013); s(300); break;
+                case 18 : hurt(3); t("하늘에서 <b>천벌의 망치</b>가 떨어졌다!"); last.unshift(2013); s(300); break;
+                case 19 : t("<b>필사적인 저항</b>으로 침묵을 먹어도 다시 태어날 수 있다!!"); if(sal==false&&silence==true) {t("<b style='color: lime'>침묵이 뭔데 (+4850)</b>");} sal = true; last.unshift(2016); s(200); break;
+            }
+             s(50); s(); c();
+        }
+        
+        // 중립
+        document.querySelectorAll(".button")[2].onclick = function () {
+            t("********************************")
+            switch (Math.floor(Math.random()*13)) {
+                case 0 : t("<b>해골마</b>가 나를 강하게 만들어줬다."); att += 4; hlt += 4; maxhlt += 4;  last.unshift(3001); break;
+                case 1 : t("<b>무너진 태양 성직자</b>의 힘을 얻었다."); hlt += 1; maxhlt += 1; att += 1; if(att==hlt) {t("<b style='color: red'>유사 그룰 (+그룰 효과)</b>"); gr = true;}  last.unshift(3002); break;
+                case 2 : t("<b>창 운반꾼</b>이 날카로운 창을 건넸다."); att += 2;  if(last[0] == 3003) {t("<b style='color: lime'>난 쌍창잡이지. (+2222)</b>"); s(2222);} last.unshift(3003); break;
+                case 3 : t("<b>곰팡이술사의 버섯의 힘이 쏫아났다!!</b>"); hlt += 2; maxhlt += 2; att += 2;  if(last[0] == 3004&&last[1] == 3004) {t("<b style='color: lime'>무서운 버섯의 힘 (+"+bonus+")</b>"); s(bonus);} last.unshift(3004); break;
+                case 4 : hurt(8); t("<b>불의 군주 라그나로스</b>의 불의 세례를 맞았다..");  last.unshift(3005); break;
+                case 5 : t("<b>호젠 치유사</b>가 당신을 회복시켰다!"); heal(maxhlt);  last.unshift(3006); break;
+                case 6 : hurt(7); t("<b>난동을 피우는 용</b>의 난동으로 공격받았다!");  last.unshift(3007); break;
+                case 7 : hurt(5); t("<b>불길소환사</b>의 불길로 감싸졌다!"); if(last[0] == 3005) {t("<b style='color: lime'>전 턴에 정령을 냈네 (+8888, 체력 1까지)</b>"); s(8888); hurt(hlt-1);} last.unshift(3008); break;
+                case 8 : t("<b>아케루스 정예병</b>의 장검을 받았다."); att += 1;  last.unshift(3009); break;
+                case 9 : t("<b>데스윙</b>의 대격변이 일어났다..."); last.unshift(3010); if(deathwing == true) {t("<b style='color: red'>익숙한 대격변 엔딩 (+데스윙의 기운)</b>"); normalAtt += 11; normalHlt += 11;} die(); deathwing = true; break;
+                case 10 : t("<b>시체생환사</b>의 효과를 받았다. 침묵을 맞고 죽어도 다시 살아난다!"); last.unshift(3011); if(respawn==false&&silence==true) {t("<b style='color: lime'>침묵이 뭔데 (+4850)</b>"); respawn = true; s(150); s(4850);}  break;
+                case 11 : t("라팜이 <b>힘의 랜턴</b>을 줬다."); att += 10; hlt += 10; maxhlt += 10; if(last[0] == 2004) {t("<b style='color: lime'>초반 최강콤보 (+"+score+")</b>"); s(score);} last.unshift(3012);  break;
+                case 12 : t("<b>시체생환사</b>의 효과를 받았다. 침묵을 맞고 죽어도 다시 살아난다!"); last.unshift(3011); if(respawn==false&&silence==true) {t("<b style='color: lime'>침묵이 뭔데 (+4850)</b>"); respawn = true; s(150); s(4850);}  break;
+            }
+             s(50); s(); c();
+        }
+
+        document.onkeydown = function () {
+            if(event.keyCode == 49) document.querySelectorAll(".button")[0].click()
+            if(event.keyCode == 50) document.querySelectorAll(".button")[1].click()
+            if(event.keyCode == 51) document.querySelectorAll(".button")[2].click()
+        }
+    </script>
+</body>
+</html>
